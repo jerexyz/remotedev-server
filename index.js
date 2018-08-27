@@ -1,7 +1,7 @@
-var assign = require('object-assign');
-var repeat = require('repeat-string');
-var getPort = require('getport');
-var getOptions = require('./lib/options');
+var assign = require("object-assign");
+var repeat = require("repeat-string");
+var getPort = require("getport");
+var getOptions = require("./lib/options");
 
 var LOG_LEVEL_NONE = 0;
 var LOG_LEVEL_ERROR = 1;
@@ -9,13 +9,15 @@ var LOG_LEVEL_WARN = 2;
 var LOG_LEVEL_INFO = 3;
 
 module.exports = function(argv) {
-  var SocketCluster = require('socketcluster').SocketCluster;
+  var SocketCluster = require("socketcluster");
   var options = assign(getOptions(argv), {
-    workerController: __dirname + '/lib/worker.js',
-    allowClientPublish: false
+    workerController: __dirname + "/lib/worker.js",
+    allowClientPublish: false,
   });
+  console.log(options);
   var port = options.port;
-  var logLevel = options.logLevel === undefined ? LOG_LEVEL_INFO : options.logLevel;
+  var logLevel =
+    options.logLevel === undefined ? LOG_LEVEL_INFO : options.logLevel;
   return new Promise(function(resolve) {
     // Check port already used
     getPort(port, function(err, p) {
@@ -27,15 +29,25 @@ module.exports = function(argv) {
       }
       if (port !== p) {
         if (logLevel >= LOG_LEVEL_WARN) {
-          console.log('[RemoteDev] Server port ' + port + ' is already used.');
+          console.log("[RemoteDev] Server port " + port + " is already used.");
         }
-        resolve({ portAlreadyUsed: true, on: function(status, cb) { cb(); } });
+        resolve({
+          portAlreadyUsed: true,
+          on: function(status, cb) {
+            cb();
+          }
+        });
       } else {
         if (logLevel >= LOG_LEVEL_INFO) {
-          console.log('[RemoteDev] Start server...');
-          console.log(repeat('-', 80) + '\n');
+          console.log("[RemoteDev] Start server...");
+          console.log(repeat("-", 80) + "\n");
         }
-        resolve(new SocketCluster(options));
+        var socketCluster = new SocketCluster(options);
+        socketCluster.on(socketCluster.EVENT_WORKER_CLUSTER_START, function (workerClusterInfo) {
+          console.log('   >> WorkerCluster PID:', workerClusterInfo.pid);
+        });
+        // console.log(socketCluster)
+        resolve(socketCluster);
       }
     });
   });
