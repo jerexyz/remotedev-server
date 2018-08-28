@@ -1,12 +1,12 @@
 RemoteDev Server
 ================
 
-Bridge for communicating with an application remotely via [Redux DevTools extension](https://github.com/zalmoxisus/redux-devtools-extension), [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) or [RemoteDev](https://github.com/zalmoxisus/remotedev). Running your server is optional, you can use [remotedev.io](https://remotedev.io) instead.
+Bridge for communicating with an application remotely via [Redux DevTools extension](https://github.com/zalmoxisus/redux-devtools-extension), [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) or [RemoteDev](https://github.com/zalmoxisus/remotedev). Running your server is optional, you can use [https://jere.gitee.io/remotedev-app/](https://jere.gitee.io/remotedev-app/) instead.
 
 ### Installation
 
 ```
-npm install --save-dev remotedev-server
+npm install --save-dev @jerexyz/remotedev-server
 ```
 
 Also [there's a docker image](https://github.com/jhen0409/docker-remotedev-server) you can use.
